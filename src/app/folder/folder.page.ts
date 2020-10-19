@@ -17,20 +17,12 @@ export class FolderPage implements OnInit {
                private router: Router ) {
   }
 
-  ngAfterViewInit() {
-    if (!this.userService.signedIn) {
-      console.log('not signed in');
-      this.showLogin();
-    }
-  }
-
   ngOnInit() {
 
   }
 
   showLogin() {
     this.router.navigateByUrl('/login');
-
   }
 
   onSelect(expense) {

@@ -1,69 +1,46 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Platform } from '@ionic/angular';
+import { Platform, MenuController} from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
+import * as firebase from 'firebase/app';
+
+
 @Component({
   selector: 'app-root',
-  templateUrl: 'app.component.html',
-  styleUrls: ['app.component.scss']
+  templateUrl: 'app.component.html'
 })
-export class AppComponent implements OnInit {
-  public selectedIndex = 0;
-  public appPages = [
-    {
-      title: 'Inbox',
-      url: '/folder/Inbox',
-      icon: 'mail'
-    },
-    {
-      title: 'Outbox',
-      url: '/folder/Outbox',
-      icon: 'paper-plane'
-    },
-    {
-      title: 'Favorites',
-      url: '/folder/Favorites',
-      icon: 'heart'
-    },
-    {
-      title: 'Archived',
-      url: '/folder/Archived',
-      icon: 'archive'
-    },
-    {
-      title: 'Trash',
-      url: '/folder/Trash',
-      icon: 'trash'
-    },
-    {
-      title: 'Spam',
-      url: '/folder/Spam',
-      icon: 'warning'
-    }
-  ];
-  public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
+export class AppComponent {
 
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
-    private statusBar: StatusBar
+    private statusBar: StatusBar,
+    private menu: MenuController
   ) {
     this.initializeApp();
   }
 
   initializeApp() {
+    firebase.initializeApp({
+      apiKey: "AIzaSyC72SvpTjUObriox8hp2Dd0Ax5MIxfedVU",
+      authDomain: "expenseapp-e3d8e.firebaseapp.com",
+      databaseURL: "https://expenseapp-e3d8e.firebaseio.com",
+      projectId: "expenseapp-e3d8e",
+      storageBucket: "expenseapp-e3d8e.appspot.com",
+      messagingSenderId: "516232562777",
+      appId: "1:516232562777:web:02c6aad996d60687ff8948",
+      measurementId: "G-JFFYE7RZP5"  
+    })
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });
   }
 
-  ngOnInit() {
-    const path = window.location.pathname.split('folder/')[1];
-    if (path !== undefined) {
-      this.selectedIndex = this.appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
-    }
+  logout() {
+    firebase.auth().signOut();
+    this.menu.close();
   }
 }
